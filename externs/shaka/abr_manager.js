@@ -45,12 +45,23 @@ shakaExtern.AbrManager = function() {};
  * The first argument is a map of content types to chosen streams.
  *
  * The second argument is an optional boolean.  If true, all data will be
- * from the buffer, which will result in a buffering event.
+ * flushed from the buffer, which will result in a buffering event.
  *
  * @typedef {function(!Object.<string, !shakaExtern.Stream>, boolean=)}
  * @exportDoc
  */
 shakaExtern.AbrManager.SwitchCallback;
+
+/**
+ * A getter from the Player that should provide actual playback statistics
+ * when the ABR manager needs to take decisions based on these.
+ *
+ * The provider function should return {shakaExtern.Stats}.
+ *
+ * @typedef {function()}
+ * @exportDoc
+ */
+shakaExtern.AbrManager.StatsProvider;
 
 
 /**
@@ -66,9 +77,10 @@ shakaExtern.AbrManager.Factory;
  * Initializes the AbrManager.
  *
  * @param {shakaExtern.AbrManager.SwitchCallback} switchCallback
+ * @param {shakaExtern.AbrManager.StatsProvider} statsProvider
  * @exportDoc
  */
-shakaExtern.AbrManager.prototype.init = function(switchCallback) {};
+shakaExtern.AbrManager.prototype.init = function(switchCallback, statsProvider) {};
 
 
 /**
