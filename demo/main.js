@@ -22,7 +22,6 @@
  *   refactor the demo into classes that talk via public method.  TODO
  */
 
-
 /** @suppress {duplicate} */
 var shakaDemo = shakaDemo || {};  // eslint-disable-line no-var
 
@@ -90,6 +89,11 @@ shakaDemo.audioOnlyPoster_ =
  */
 shakaDemo.CC_APP_ID_ = '7B25EC44';
 
+/**
+ * @type {shakaDemo.AppPlugin}
+ */
+shakaDemo.appPlugin = null;
+
 
 /**
  * Initialize the application.
@@ -108,7 +112,7 @@ shakaDemo.init = function() {
 
   document.getElementById('preferredAudioChannelCount').value = '2';
 
-  let params = shakaDemo.getParams_();
+  let params = shakaDemo.getParams();
 
   shakaDemo.setupLogging_();
 
@@ -217,6 +221,8 @@ shakaDemo.init = function() {
         shakaDemo.postBrowserCheckParams_(params);
         window.addEventListener('hashchange', shakaDemo.updateFromHash_);
       });
+
+      shakaDemo.initAppPlugin_(params.pluginParams);
     }).catch(function(error) {
       // Some part of the setup of the demo app threw an error.
       // Notify the user of this.
@@ -225,12 +231,31 @@ shakaDemo.init = function() {
   }
 };
 
+/**
+ * Initialize the application plugin
+ * @param {!Object.<string, string>} params
+ * @private
+ */
+shakaDemo.initAppPlugin_ = function(params) {
+  let player = shakaDemo.player_;
+  let plugin = shakaDemo.AppPlugin.getPluginInstance(player);
+  if (!plugin) {
+    return;
+  }
+  shakaDemo.appPlugin = plugin;
+  plugin.onStart(params).catch(function(error) {
+    if (shaka.log) {
+      shaka.log.error('Error setting up plugin ' + error);
+    }
+    // TODO: `error` could be anything. How to handle?
+  });
+};
+
 
 /**
-  * @return {!Object.<string, string>} params
-  * @private
+  * @return {!Object.<string, string|!Object<string,string>>} params
   */
-shakaDemo.getParams_ = function() {
+shakaDemo.getParams = function() {
   // Read URL parameters.
   let fields = location.search.substr(1);
   fields = fields ? fields.split(';') : [];
@@ -247,6 +272,25 @@ shakaDemo.getParams_ = function() {
     let kv = combined[i].split('=');
     params[kv[0]] = kv.slice(1).join('=');
   }
+  if (params.pluginParams) {
+    params.pluginParams =
+      shakaDemo.getFormattedPluginParams_(params.pluginParams);
+  }
+  return params;
+};
+
+/**
+ * @param {string} paramString
+ * @return {!Object.<string, string>} params
+ * @private
+ */
+shakaDemo.getFormattedPluginParams_ = function(paramString) {
+  let params = {};
+  let kvPairs = paramString.split('&');
+  kvPairs.forEach(function(pair) {
+    pair = pair.split('=');
+    params[pair[0]] = pair[1];
+  });
   return params;
 };
 
@@ -482,7 +526,7 @@ shakaDemo.updateFromHash_ = function() {
     return;
   }
 
-  let params = shakaDemo.getParams_();
+  let params = shakaDemo.getParams();
   shakaDemo.preBrowserCheckParams_(params);
   shakaDemo.postBrowserCheckParams_(params);
 };
@@ -495,7 +539,7 @@ shakaDemo.hashShouldChange_ = function() {
   }
 
   let params = [];
-  let oldParams = shakaDemo.getParams_();
+  let oldParams = shakaDemo.getParams();
 
   // Save the current asset.
   let assetUri;
@@ -619,6 +663,21 @@ shakaDemo.hashShouldChange_ = function() {
       document.getElementById('drmSettingsAudioRobustness').value;
   if (audioRobustness) {
     params.push('audioRobustness=' + audioRobustness);
+  }
+
+  if ('plugin' in oldParams) {
+    params.push('plugin=' + oldParams.plugin);
+  }
+
+  if ('pluginParams' in oldParams) {
+    let pluginParamString = '';
+    let pluginParams = oldParams['pluginParams'];
+    for (let param in pluginParams) {
+      pluginParamString = pluginParamString ?
+        pluginParamString + '&' : 'pluginParams=';
+      pluginParamString += param + '=' + pluginParams[param];
+    }
+    params.push(pluginParamString);
   }
 
   // These parameters must be added manually, so preserve them.
