@@ -40,6 +40,7 @@ describe('DashParser Live', () => {
       filterNewPeriod: () => {},
       filterAllPeriods: () => {},
       onTimelineRegionAdded: fail,  // Should not have any EventStream elements.
+      onSegmentParsed: fail,
       onEvent: fail,
       onError: fail,
     };
