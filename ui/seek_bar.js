@@ -55,7 +55,8 @@ shaka.ui.SeekBar = class extends shaka.ui.RangeElement {
      * @private {shaka.util.Timer}
      */
     this.seekTimer_ = new shaka.util.Timer(() => {
-      this.video.currentTime = this.getValue();
+      this.video.currentTime = Math.min(this.getValue(),
+        this.video.duration - 0.01);
     });
 
     this.eventManager.listen(this.localization,
@@ -65,6 +66,8 @@ shaka.ui.SeekBar = class extends shaka.ui.RangeElement {
     this.eventManager.listen(this.localization,
         shaka.ui.Localization.LOCALE_CHANGED,
         () => this.updateAriaLabel_());
+
+    this.paused = null;
 
     // Initialize seek state and label.
     this.setValue(this.video.currentTime);
@@ -89,6 +92,7 @@ shaka.ui.SeekBar = class extends shaka.ui.RangeElement {
    * @override
    */
   onChangeStart() {
+    this.paused = this.video.paused;
     this.controls.setSeeking(true);
     this.video.pause();
   }
@@ -131,7 +135,9 @@ shaka.ui.SeekBar = class extends shaka.ui.RangeElement {
     // call the event so that we can respond immediately.
     this.seekTimer_.tickNow();
     this.controls.setSeeking(false);
-    this.video.play();
+    if (!this.paused) {
+      this.video.play();
+    }
   }
 
   /** @return {boolean} */
@@ -164,7 +170,7 @@ shaka.ui.SeekBar = class extends shaka.ui.RangeElement {
     } else {
       shaka.ui.Utils.setDisplay(this.container, true);
 
-      if (bufferedLength == 0) {
+      if (bufferedLength == 0 && !this.video.seeking) {
         this.container.style.background = colors.base;
       } else {
         const clampedBufferStart = Math.max(bufferedStart, seekRange.start);
