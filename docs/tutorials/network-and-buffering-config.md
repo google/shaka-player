@@ -43,7 +43,7 @@ randomly chosen between 4 and 12.  To extend our earlier example:
 5. delay of 8±50% (4 to 12), retry
 
 You should consider the default backoff and fuzz factors as a recommendation of
-best practice.  The base delay, timeout, and maximum number of attempts should
+best practice.  The base delay, timeout, and the maximum number of attempts should
 be customized for your application's requirements.
 
 
@@ -94,7 +94,7 @@ parameters in `initPlayer()` to see how they affect playback.
 
 #### Server Considerations
 
-Shaka Player makes a number of requests to various servers while streaming.  You
+Shaka Player makes several requests to various servers while streaming.  You
 need to make sure that Shaka has correct access to those resources.  Browsers
 impose several restrictions on the content that a webpage has access to.
 

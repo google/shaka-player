@@ -8,7 +8,7 @@ authentication.
 *Please note that the license server we are using in this tutorial is a
 Widevine license server, so you will need to use Chrome to follow along.
 Because EME requires a secure URL, you will also need to use localhost or
-https for this tutorial.  See the note at the top of {@tutorial drm-config}
+HTTPS for this tutorial.  See the note at the top of {@tutorial drm-config}
 for more information.*
 
 To start, we're going to use the code from {@tutorial basic-usage}, but use this
@@ -72,7 +72,7 @@ Register the filter before calling `player.load()`:
 ```
 
 Load the page again, and the license request will succeed.  Although we are
-using a fixed value for the purposes of this tutorial, your application can
+using a fixed value for this tutorial, your application can
 derive appropriate authentication header(s) before or during the callback.
 
 

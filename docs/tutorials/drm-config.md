@@ -3,7 +3,7 @@
 #### NOTE: EME and http URLs
 
 EME requires a secure URL to use.  This means you have to use `https` or be on
-`localhost`.  Currently only Chrome enforces it, but other browsers will in the
+`localhost`.  Currently, only Chrome enforces it, but other browsers will in the
 future.  Also, because of mixed content requirements, if your site is using
 `https`, then your manifest and every segment will also need to use `https` too.
 
@@ -49,7 +49,7 @@ key system in the manifest is used.
 
 The interoperable encryption standard that DRM vendors are implementing is
 called Common Encryption (CENC).  Some DASH manifests don't specify any
-particular key system at all, but instead state that any CENC system will do:
+particular key system at all, but instead, state that any CENC system will do:
 
 ```xml
 <ContentProtection schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc"/>
@@ -145,7 +145,7 @@ playback.  Passing in a higher security level than can be supported will cause
 default is the empty string, which is the lowest security level supported by the
 key system.
 
-Each key system has their own values for robustness.  The values for Widevine
+Each key system has its own values for robustness.  The values for Widevine
 are well-known (see the [Chromium sources][]) and listed below, but
 values for other key systems are not known to us at this time.
 

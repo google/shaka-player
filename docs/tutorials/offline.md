@@ -3,7 +3,7 @@
 ## Overview
 
 This tutorial walks you through the main methods for Shaka Player’s offline
-support. After this tutorial you will know how to:
+support. After this tutorial, you will know how to:
 
  - Download content.
  - List downloaded content.
@@ -331,11 +331,11 @@ the title of the content and the time we downloaded it, but the metadata can
 contain anything you want. The metadata is optional, so you can ignore it if
 you want.
 
-`storage.store` returns an IAbortableOperation that resolves to a
+`storage.store` returns an `IAbortableOperation` that resolves to a
 `shaka.externs.StoredContent` instance (a summary of the stored content).
 
-At this point, the content is now stored offline and it's ready to be played.
-Next we will add functionality to play offline content.
+At this point, the content is now stored offline and is ready to be played.
+Next, we will add functionality to play offline content.
 
 ## Playing Offline Content
 
@@ -356,7 +356,7 @@ Next, we need to list the content that has already been stored.
 
 ## Listing Offline Content
 
-Next we are going to resolve the TODO in “listContent” labeled “return all
+Next, we are going to resolve the TODO in “listContent” labeled “return all
 downloaded content” with:
 
 ```js
