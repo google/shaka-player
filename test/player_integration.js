@@ -239,18 +239,15 @@ describe('Player', () => {
       expect(variantTrack.language).not.toBe(textTrack.language);
     });
 
-    it('is not called automatically with audio and text match', async () => {
-      // If the audio and text tracks use the same language, we do not enable
-      // text display automatically, no matter the text preference.
-
+    it('is called automatically even with audio and text match', async () => {
       const preferredTextLanguage = 'und';  // The same as in the content itself
       player.configure({preferredTextLanguage: preferredTextLanguage});
 
       // Now load the content and wait for completion.
       await player.load('test:sintel_compiled');
 
-      // Make sure the automatic setting did not happen.
-      expect(player.isTextTrackVisible()).toBe(false);
+      // Make sure the automatic setting did happen.
+      expect(player.isTextTrackVisible()).toBe(true);
 
       // Make sure the content we tested with has text tracks, that the
       // config we used matches the content, and that the text and audio
