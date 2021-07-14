@@ -926,6 +926,10 @@ shaka.ui.Controls = class extends shaka.util.FakeEventTarget {
     this.eventManager_.listen(this.videoContainer_, 'keyup', (e) => {
       this.onControlsKeyUp_(/** @type {!KeyboardEvent} */(e));
     });
+    
+    this.eventManager_.listen(window, 'keydown', (e) => {
+      this.onKeyPress_(/** @type {!KeyboardEvent} */(e));
+    });
 
     this.eventManager_.listen(
         this.adManager_, shaka.ads.AdManager.AD_STARTED, (e) => {
@@ -1240,6 +1244,29 @@ shaka.ui.Controls = class extends shaka.util.FakeEventTarget {
   onControlsKeyUp_(event) {
     // When the key is released, remove it from the pressed keys set.
     this.pressedKeys_.delete(event.key);
+  }
+  
+  /**
+   * Support controls with keyboard inputs.
+   * @param {!KeyboardEvent} event
+   * @private
+   */
+  onKeyPress_(event) {
+    // Show the control panel if any button is pressed.
+    this.onMouseMove_(event);
+
+    if (!this.config_.enableKeyboardPlaybackControls) {
+      return;
+    }
+
+    switch (event.key) {
+      // toggle full screen on pressing f key
+      case 'f':
+        if (this.config_.toggleFullscreenOnfPress) {
+          this.toggleFullScreen();
+        }
+        break;
+    }
   }
 
   /**
