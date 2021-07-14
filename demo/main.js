@@ -9,7 +9,6 @@ goog.provide('shakaDemo.Main');
 
 goog.require('ShakaDemoAssetInfo');
 goog.require('goog.asserts');
-goog.require('shakaDemo.CloseButton');
 goog.require('shakaDemo.MessageIds');
 goog.require('shakaDemo.Utils');
 
@@ -334,9 +333,7 @@ shakaDemo.Main = class {
       uiConfig.controlPanelElements.splice(
           index, 1, 'rewind', 'play_pause', 'fast_forward');
     }
-    if (!uiConfig.controlPanelElements.includes('close')) {
-      uiConfig.controlPanelElements.push('close');
-    }
+    uiConfig.addCloseButton = true;
     ui.configure(uiConfig);
   }
 
@@ -350,13 +347,6 @@ shakaDemo.Main = class {
     this.player_ = ui.getControls().getPlayer();
 
     if (!this.noInput_) {
-      // Don't add the close button if in noInput mode; it doesn't make much
-      // sense to stop playing a video if you can't start playing other videos.
-
-      // Register custom controls to the UI.
-      const closeFactory = new shakaDemo.CloseButton.Factory();
-      shaka.ui.Controls.registerElement('close', closeFactory);
-
       // Configure UI.
       this.configureUI_();
     }
@@ -386,6 +376,9 @@ shakaDemo.Main = class {
     this.controls_.addEventListener('error', onErrorEvent);
     this.controls_.addEventListener('caststatuschanged', (event) => {
       this.onCastStatusChange_(event['newStatus']);
+    });
+    this.controls_.addEventListener('playerunloading', () => {
+      this.unload();
     });
 
     this.localization_ = this.controls_.getLocalization();

@@ -40,4 +40,5 @@ shaka.ui.Enums.MaterialDesignIcons = {
   'UNLOOP': 'repeat_on',
   'AIRPLAY': 'airplay',
   'REPLAY': 'replay',
+  'CLOSE': 'close',
 };

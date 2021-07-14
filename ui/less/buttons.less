@@ -86,6 +86,26 @@
   }
 }
 
+.shaka-close-button {
+  /* Move the button to the top-right. */
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+
+  /* Give the button a round background. */
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  color: #000;
+  background: rgba(255, 255, 255, 0.85);
+
+  .show-when-controls-shown();
+}
+
 /* Use a consistent outline focus style across browsers. */
 .shaka-controls-container {
   button:focus, input:focus {
