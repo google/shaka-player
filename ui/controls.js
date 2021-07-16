@@ -20,6 +20,8 @@ goog.require('shaka.ui.Locales');
 goog.require('shaka.ui.Localization');
 goog.require('shaka.ui.SeekBar');
 goog.require('shaka.ui.Utils');
+goog.require('shaka.ui.HiddenFastForwardButton');
+goog.require('shaka.ui.HiddenRewindButton');
 goog.require('shaka.util.Dom');
 goog.require('shaka.util.EventManager');
 goog.require('shaka.util.FakeEvent');
@@ -651,6 +653,14 @@ shaka.ui.Controls = class extends shaka.util.FakeEventTarget {
       this.addBufferingSpinner_();
     }
 
+    if (this.config_.fastForwardOnTaps) {
+      this.addFastForwardButtonOnControlsContainer_();
+    }
+
+    if (this.config_.rewindOnTaps) {
+      this.addRewindButtonOnControlsContainer_();
+    }
+
     this.addDaiAdContainer_();
 
     this.addControlsButtonPanel_();
@@ -762,6 +772,44 @@ shaka.ui.Controls = class extends shaka.util.FakeEventTarget {
     spinnerCircle.setAttribute('stroke-width', '1');
     spinnerCircle.setAttribute('stroke-miterlimit', '10');
     svg.appendChild(spinnerCircle);
+  }
+
+  /**
+   * Add fast-forward button on Controls container
+   * for moving video 5s ahead when the video is
+   * tapped more than once, video seeks ahead 5s
+   * for every extra tap.
+   * @private
+   */
+  addFastForwardButtonOnControlsContainer_() {
+    const hiddenFastForwardContainer = shaka.util.Dom.createHTMLElement('div');
+    hiddenFastForwardContainer.classList.add(
+        'shaka-hidden-fast-forward-container');
+    this.controlsContainer_.appendChild(hiddenFastForwardContainer);
+
+    /** @private {shaka.ui.HiddenFastForwardButton} */
+    this.hiddenFastForwardButton_ =
+        new shaka.ui.HiddenFastForwardButton(hiddenFastForwardContainer, this);
+    this.elements_.push(this.hiddenFastForwardButton_);
+  }
+
+  /**
+   * Add Rewind button on Controls container
+   * for moving video 5s behind when the video is
+   * tapped more than once, video seeks behind 5s
+   * for every extra tap.
+   * @private
+   */
+  addRewindButtonOnControlsContainer_() {
+    const hiddenRewindContainer = shaka.util.Dom.createHTMLElement('div');
+    hiddenRewindContainer.classList.add(
+        'shaka-hidden-rewind-container');
+    this.controlsContainer_.appendChild(hiddenRewindContainer);
+
+    /** @private {shaka.ui.HiddenRewindButton} */
+    this.hiddenRewindButton_ =
+        new shaka.ui.HiddenRewindButton(hiddenRewindContainer, this);
+    this.elements_.push(this.hiddenRewindButton_);
   }
 
   /** @private */

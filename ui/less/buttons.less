@@ -110,3 +110,98 @@
     outline: none;
   }
 }
+
+/* this button is placed on the Controls container and forwards the
+ * video on more than one tap. It covers almost 40% of right
+ * side of video container and stays hidden until clicked. */
+.shaka-fast-foward-onControlsContainer {
+  height: 100%;
+  width: 100%;
+  .shrinkable();
+  .absolute-position();
+
+  /* keep all the elements inside fast forward div in center and in a row */
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-radius: 40% 0  0 40%;
+
+  /* To be properly positioned, this should have no margin. */
+  margin: 0;
+
+  /* No border. */
+  border: none;
+
+  /* setting text color to white */
+  color: rgb(255, 255, 255);
+
+  /* setting background color to black so white text can be
+   * seen clearly */
+  background-color: rgba(0, 0, 0, 0.5);
+
+  cursor: default;
+  font-size: 20px;
+
+  /* hidding the container by setting opacity */
+  opacity: 0;
+
+  /* make the text inside this button unselectable */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* this button is placed on the video container and rewinds the
+ * video on more than one tap. It covers almost 40% of left
+ * side of video container and stays hidden until clicked. */
+.shaka-rewind-onControlsContainer {
+  height: 100%;
+  width: 100%;
+  .shrinkable();
+  .absolute-position();
+
+  /* keep all the elements inside rewind div in center and in row */
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0 40% 40% 0;
+
+  /* To be properly positioned, this should have no margin. */
+  margin: 0;
+
+  /* No border. */
+  border: none;
+
+  /* setting text color to white */
+  color: rgb(255, 255, 255);
+
+  /* setting background color to black so white text can be
+   * seen clearly */
+  background-color: rgba(0, 0, 0, 0.5);
+
+  cursor: default;
+  font-size: 20px;
+
+  /* hidding the container by setting opacity */
+  opacity: 0;
+
+  /* make the text inside this button unselectable */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* This class is instead of material-icon-round
+ * because the font-size of 24 doesn't look good */
+.shaka-forward-rewind-onControlsContainer-icon {
+  font-family: 'Material Icons Round';
+  font-size: 34px;
+}
